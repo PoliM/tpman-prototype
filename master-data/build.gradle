@@ -1,16 +1,16 @@
+import java.awt.Desktop
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1'
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
     }
 }
 
 apply plugin: 'war'
 apply plugin: 'liberty'
-apply plugin: 'org.junit.platform.gradle.plugin'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -25,12 +25,15 @@ repositories {
 
 dependencies {
     implementation 'org.yaml:snakeyaml:1.19'
-    providedCompile 'javax:javaee-api:7.0'
+    implementation 'com.google.guava:guava:24.0-jre'
+    compileOnly 'javax:javaee-api:7.0'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.3'
+    testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.15.0'
     testImplementation 'org.assertj:assertj-core:3.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.3'
+    testImplementation 'org.apache.cxf:cxf-rt-rs-client:3.1.11'
+    testImplementation 'org.apache.cxf:cxf-rt-rs-extension-providers:3.1.11'
+    testImplementation 'javax.json:javax.json-api:1.0'
 
     libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version: '[17.0.0.4,)'
 }
@@ -46,9 +49,9 @@ liberty {
     server {
         name = "${appName}Server"
         configFile = file("src/main/liberty/config/server.xml")
-        bootstrapProperties = ['default.http.port': testServerHttpPort,
+        bootstrapProperties = ['default.http.port' : testServerHttpPort,
                                'default.https.port': testServerHttpsPort,
-                               'app.context.root': warContext]
+                               'app.context.root'  : warContext] 
         packageLiberty {
             archive = "$buildDir/${appName}.zip"
             include = "usr"
@@ -60,4 +63,18 @@ war {
     archiveName = "${baseName}.${extension}"
 }
 
+
+test {
+    systemProperties = ['liberty.test.port': testServerHttpPort, 'war.name': warContext]
+}
+
+task openBrowser {
+    description = 'Open browser to http://localhost:8080/${warContext}'
+    doLast {
+        Desktop.desktop.browse "http://localhost:${testServerHttpPort}/${appName}".toURI()
+    }
+}
+
+check.dependsOn 'libertyStart'
+check.finalizedBy 'libertyStop'
 

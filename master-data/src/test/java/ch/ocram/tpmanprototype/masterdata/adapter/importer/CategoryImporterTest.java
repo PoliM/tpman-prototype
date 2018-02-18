@@ -1,8 +1,8 @@
 package ch.ocram.tpmanprototype.masterdata.adapter.importer;
 
 import ch.ocram.tpmanprototype.masterdata.domain.CategoryRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -11,7 +11,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class CategoryImporterTest {
+public class CategoryImporterTest {
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -19,7 +19,7 @@ class CategoryImporterTest {
     @InjectMocks
     private CategoryImporter testee;
 
-    @BeforeEach
+    @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }

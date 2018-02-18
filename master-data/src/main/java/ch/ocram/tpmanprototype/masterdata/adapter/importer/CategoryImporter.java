@@ -4,6 +4,9 @@ import ch.ocram.tpmanprototype.masterdata.domain.Category;
 import ch.ocram.tpmanprototype.masterdata.domain.CategoryRepository;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,10 +14,17 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 
+@Singleton
+@Startup
 public class CategoryImporter {
 
     @Inject
     private CategoryRepository categoryRepository;
+
+    @PostConstruct
+    public void startup() {
+        loadFromFile("/home/marco/Documents/Projects/EVE_Tpman/tpman-prototype/master-data/import/categoryIDs.yaml");
+    }
 
     public void loadFromFile(String filename) {
         Yaml yaml = new Yaml();
