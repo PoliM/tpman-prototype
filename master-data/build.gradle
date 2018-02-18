@@ -24,8 +24,14 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.yaml:snakeyaml:1.19'
+    providedCompile 'javax:javaee-api:7.0'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.3'
+    testImplementation 'org.mockito:mockito-core:2.15.0'
+    testImplementation 'org.assertj:assertj-core:3.9.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.3'
+
     libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version: '[17.0.0.4,)'
 }
 
@@ -48,6 +54,10 @@ liberty {
             include = "usr"
         }
     }
+}
+
+war {
+    archiveName = "${baseName}.${extension}"
 }
 
 

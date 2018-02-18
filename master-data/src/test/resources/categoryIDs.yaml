@@ -1,0 +1,18 @@
+0:
+    name:
+        de: '#System'
+        en: '#System'
+        fr: '#Système'
+        ja: '#システム'
+        ru: '#Система'
+        zh: '#星系'
+    published: false
+2:
+    name:
+        de: Interstellar
+        en: Celestial
+        fr: Céleste
+        ja: セレスチャル
+        ru: Небесное тело
+        zh: 天体
+    published: true
